@@ -1,0 +1,1296 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Noto Sans JP",
+    sans-serif;
+  background: #0d1420;
+  color: #f5f7fa;
+}
+
+.app-header {
+  min-height: 90px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111b2a;
+  border-bottom: 1px solid #263448;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.app-header p {
+  margin: 4px 0 0;
+  color: #91a0b5;
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  font: inherit;
+}
+
+.primary-button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: #3f7cff;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  filter: brightness(1.08);
+}
+
+.edit-button {
+  border: 1px solid #45556d;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #1a2638;
+  color: white;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background: #243249;
+}
+
+.danger-outline-button {
+  border: 1px solid #b9545e;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: transparent;
+  color: #ff9299;
+  cursor: pointer;
+}
+
+.danger-outline-button:hover {
+  background: #48252a;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  overflow-x: auto;
+  background: #0f1825;
+  border-bottom: 1px solid #263448;
+}
+
+.filter-button {
+  flex-shrink: 0;
+  border: 1px solid #334258;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #182436;
+  color: #b6c0cf;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  background: #3f7cff;
+  border-color: #3f7cff;
+  color: white;
+}
+
+.summary-toolbar {
+  min-height: 68px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #111a28;
+  border-bottom: 1px solid #263448;
+}
+
+.summary-title {
+  margin-bottom: 7px;
+  color: #91a0b5;
+  font-size: 11px;
+}
+
+.position-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.position-count-chip {
+  padding: 5px 9px;
+  border: 1px solid #334258;
+  border-radius: 999px;
+  background: #182436;
+  color: #c9d2df;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.position-count-chip strong {
+  color: #ffffff;
+}
+
+.sort-control {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #91a0b5;
+  font-size: 12px;
+}
+
+.sort-control select {
+  width: auto;
+  min-width: 150px;
+}
+
+.app-layout {
+  height: calc(100vh - 285px);
+  display: grid;
+  grid-template-columns:
+    minmax(600px, 58%)
+    minmax(360px, 42%);
+}
+
+.player-list-panel {
+  min-width: 0;
+  overflow: hidden;
+  background: #111a28;
+  border-right: 1px solid #2a374a;
+}
+
+.panel-title {
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #263448;
+}
+
+.panel-title h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panel-title span {
+  color: #91a0b5;
+}
+
+.table-wrapper {
+  height: calc(100% - 60px);
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 12px 10px;
+  text-align: left;
+  white-space: nowrap;
+  background: #182436;
+  color: #9eacc0;
+  border-bottom: 1px solid #2b3a4f;
+}
+
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #253246;
+  vertical-align: middle;
+}
+
+.player-row {
+  cursor: pointer;
+}
+
+.player-row:hover {
+  background: #182334;
+}
+
+.player-row.selected {
+  background: #17345a;
+}
+
+td small {
+  display: block;
+  margin-top: 3px;
+  color: #8f9bae;
+}
+
+.ability-range {
+  white-space: nowrap;
+}
+
+.ability-certain {
+  color: #ffd65a;
+  font-weight: 700;
+}
+
+.ability-uncertain {
+  color: #8c97a8;
+  font-weight: 700;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status.keep {
+  background: #173d2c;
+  color: #61d892;
+}
+
+.status.sell {
+  background: #4a2327;
+  color: #ff858d;
+}
+
+.status.pending {
+  background: #423c22;
+  color: #e4c55b;
+}
+
+.status.loan {
+  background: #243c61;
+  color: #95bdff;
+}
+
+.player-detail-panel {
+  overflow-y: auto;
+  padding: 22px;
+  background: #0f1724;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.detail-header h2 {
+  margin: 6px 0 0;
+  font-size: 25px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.position-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #254b7d;
+  color: #9dc4ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #9fadc1;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.detail-grid > div,
+.info-row {
+  padding: 12px;
+  border-radius: 9px;
+  background: #182435;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  color: #8796aa;
+}
+
+.detail-grid strong {
+  font-size: 14px;
+}
+
+.info-row {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.info-row span {
+  color: #8f9bae;
+}
+
+.top-space {
+  margin-top: 10px;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #3c4c62;
+  border-radius: 8px;
+  background: #182435;
+  color: #ccd4df;
+  cursor: pointer;
+}
+
+.toggle-button.active {
+  background: #244e84;
+  border-color: #508cff;
+  color: white;
+}
+
+.help-text {
+  display: block;
+  margin-top: 8px;
+  color: #77869b;
+}
+
+.advice-box {
+  padding: 14px;
+  border: 1px solid #36547c;
+  border-radius: 10px;
+  background: #14243a;
+}
+
+.advice-box strong {
+  color: #a9caff;
+}
+
+.advice-box p {
+  margin: 8px 0 0;
+  color: #c2cad5;
+  line-height: 1.65;
+  font-size: 13px;
+}
+
+.decision-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+.decision-select-button {
+  padding: 10px;
+  border: 1px solid #3b4a60;
+  border-radius: 8px;
+  background: #182435;
+  color: #aeb8c7;
+  cursor: pointer;
+}
+
+.decision-select-button.active {
+  background: #3f7cff;
+  border-color: #3f7cff;
+  color: white;
+}
+
+textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid #39495f;
+  border-radius: 8px;
+  background: #141f2f;
+  color: white;
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #39495f;
+  border-radius: 8px;
+  background: #141f2f;
+  color: white;
+  font: inherit;
+}
+
+.ability-input-group {
+  grid-column: span 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #34445b;
+  border-radius: 10px;
+  background: #121d2c;
+}
+
+.ability-group-title {
+  grid-column: 1 / -1;
+  color: #dce4ef;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ability-group-title small {
+  display: block;
+  margin-top: 3px;
+  color: #7f8da2;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.ability-input-group label {
+  min-width: 0;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: min(900px, 96vw);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid #34445b;
+  border-radius: 14px;
+  background: #101a28;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #aab6c8;
+}
+
+@media (max-width: 800px) {
+  .app-header {
+    gap: 12px;
+  }
+
+  .header-actions {
+    flex-direction: column-reverse;
+  }
+
+  .summary-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sort-control {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sort-control select {
+    flex: 1;
+  }
+
+  .app-layout {
+    display: block;
+    height: auto;
+  }
+
+  .player-list-panel {
+    border-right: none;
+  }
+
+  .player-detail-panel {
+    min-height: 100vh;
+  }
+
+  .table-wrapper {
+    max-height: 55vh;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ability-input-group {
+    grid-column: auto;
+  }
+
+  .detail-actions {
+    flex-direction: column-reverse;
+  }
+}
+
+
+/* ===== 契約更新 ===== */
+
+.contract-button {
+  border: 1px solid #5e7f5b;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #1a2a1f;
+  color: #b9e2b2;
+  cursor: pointer;
+}
+
+.contract-button:hover {
+  background: #22382a;
+}
+
+.contract-modal-content {
+  width: min(820px, 96vw);
+}
+
+.contract-current-box {
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid #314158;
+  border-radius: 10px;
+  background: #121d2c;
+}
+
+.contract-current-box h3,
+.contract-preview h3 {
+  margin: 0 0 10px;
+  color: #aebbd0;
+  font-size: 13px;
+}
+
+.contract-current-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.contract-current-grid > div {
+  padding: 10px;
+  border-radius: 8px;
+  background: #182435;
+}
+
+.contract-current-grid span {
+  display: block;
+  margin-bottom: 4px;
+  color: #8493a8;
+  font-size: 11px;
+}
+
+.contract-current-grid strong {
+  font-size: 13px;
+}
+
+.contract-preview {
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid #3c506b;
+  border-radius: 10px;
+  background: #142033;
+}
+
+#contractChangePreview {
+  color: #c7d1df;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.contract-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-item {
+  padding: 11px 12px;
+  border: 1px solid #304158;
+  border-radius: 9px;
+  background: #162233;
+}
+
+.history-date {
+  margin-bottom: 6px;
+  color: #8ea0b8;
+  font-size: 11px;
+}
+
+.history-line {
+  color: #c9d2df;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.history-salary-change {
+  color: #b8d7ff;
+}
+
+.history-empty {
+  color: #718097;
+  font-size: 12px;
+}
+
+@media (max-width: 800px) {
+  .contract-current-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== ゲーム内日付 ===== */
+
+.game-date-bar {
+  min-height: 70px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #121d2b;
+  border-bottom: 1px solid #263448;
+}
+
+.game-date-title {
+  color: #dce5f1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.game-date-help {
+  margin-top: 3px;
+  color: #7f8fa5;
+  font-size: 11px;
+}
+
+.game-date-bar input {
+  width: 180px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 800px) {
+  .game-date-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .game-date-bar input {
+    width: 100%;
+  }
+}
+
+
+/* ===== 金額入力 ===== */
+
+.money-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.money-label {
+  color: #aab6c8;
+  font-size: 13px;
+}
+
+.money-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 82px;
+  gap: 8px;
+}
+
+.money-input-row input,
+.money-input-row select {
+  width: 100%;
+}
+
+.money-input-row select {
+  text-align: center;
+  font-weight: 700;
+}
+
+
+/* ===== 年俸相場 ===== */
+
+.salary-market-box {
+  padding: 14px;
+  border: 1px solid #39516f;
+  border-radius: 10px;
+  background: #132137;
+}
+
+.salary-market-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.salary-market-grid > div {
+  padding: 10px;
+  border-radius: 8px;
+  background: #18283d;
+}
+
+.salary-market-note {
+  margin: 11px 0 0;
+  color: #9eafc4;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.salary-verdict-good {
+  color: #71d99a;
+}
+
+.salary-verdict-low {
+  color: #82baff;
+}
+
+.salary-verdict-warn {
+  color: #e7c86a;
+}
+
+.salary-verdict-high {
+  color: #ff9299;
+}
+
+.salary-check-panel {
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid #39516f;
+  border-radius: 10px;
+  background: #132137;
+}
+
+.salary-check-panel h3 {
+  margin: 0 0 10px;
+  color: #aebbd0;
+  font-size: 13px;
+}
+
+.requested-salary-verdict {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #18283d;
+  color: #aebbd0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+@media (max-width: 800px) {
+  .salary-market-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== 外部参考相場 ===== */
+
+.salary-market-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.salary-market-heading {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.salary-market-heading strong {
+  color: #d9e5f4;
+  font-size: 13px;
+}
+
+.salary-market-heading span {
+  color: #7f8fa5;
+  font-size: 10px;
+}
+
+.external-market-box {
+  border-color: #66543d;
+  background: #1b1d1a;
+}
+
+.external-market-edit-button {
+  margin-top: 12px;
+}
+
+.external-market-modal-content {
+  width: min(760px, 96vw);
+}
+
+.external-market-help {
+  margin-bottom: 16px;
+  padding: 11px 12px;
+  border-left: 3px solid #9a7c52;
+  border-radius: 7px;
+  background: #211d18;
+  color: #b9aa96;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.external-market-preview {
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid #5e4e3c;
+  border-radius: 10px;
+  background: #211d18;
+}
+
+.external-market-preview h3 {
+  margin: 0 0 10px;
+  color: #c9b79e;
+  font-size: 13px;
+}
+
+#externalMarketPreview {
+  color: #d2c5b3;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* ===== リーグ全体設定 ===== */
+
+.game-date-bar {
+  align-items: stretch;
+}
+
+.global-setting-block {
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.global-setting-block input,
+.global-setting-block select {
+  margin-top: 7px;
+}
+
+.league-setting-block {
+  min-width: 300px;
+}
+
+.league-select-row {
+  display: grid;
+  grid-template-columns: 120px minmax(140px, 1fr);
+  gap: 8px;
+}
+
+.league-data-status {
+  margin-left: auto;
+  align-self: center;
+  max-width: 330px;
+  padding: 9px 11px;
+  border: 1px solid #32445d;
+  border-radius: 8px;
+  background: #152033;
+  color: #9fb0c6;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.league-data-status.ready {
+  border-color: #365846;
+  color: #8fd1a6;
+}
+
+.league-data-status.missing {
+  border-color: #66543d;
+  color: #d2b47d;
+}
+
+@media (max-width: 800px) {
+  .league-setting-block {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .league-data-status {
+    margin-left: 0;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+
+/* ===== 生年月日入力 ===== */
+
+.birthdate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.birthdate-input-row {
+  display: grid;
+  grid-template-columns: minmax(76px, 1.4fr) auto minmax(56px, 1fr) auto minmax(56px, 1fr);
+  align-items: center;
+  gap: 6px;
+}
+
+.birthdate-input-row input {
+  width: 100%;
+  text-align: center;
+}
+
+.birthdate-input-row span {
+  color: #7f8fa5;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .birthdate-input-row {
+    grid-template-columns: minmax(72px, 1.4fr) auto minmax(52px, 1fr) auto minmax(52px, 1fr);
+  }
+}
+
+
+/* ===== 新規登録：現在能力＋潜在能力 横並び ===== */
+
+.ability-pair-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.ability-pair-row .ability-input-group {
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .ability-pair-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+
+/* ===== 新規登録：兼任ポジション＋出場要求 横並び ===== */
+
+.position-playing-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.position-playing-row > label {
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .position-playing-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+
+/* ===== ヘッダー統合：ゲーム内日付＋所属リーグ ===== */
+
+.compact-app-header {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(560px, 2.3fr) auto;
+  align-items: center;
+  gap: 22px;
+  min-height: 108px;
+  padding: 14px 20px;
+}
+
+.header-brand {
+  min-width: 0;
+}
+
+.header-brand h1 {
+  margin: 0;
+}
+
+.header-brand p {
+  margin: 5px 0 0;
+}
+
+.header-global-settings {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 190px minmax(300px, 1fr) minmax(220px, 0.9fr);
+  align-items: end;
+  gap: 12px;
+}
+
+.header-setting-block {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-setting-title {
+  color: #dce7f5;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.header-setting-help {
+  color: #7790aa;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.header-setting-block input,
+.header-setting-block select {
+  margin-top: 2px;
+  min-height: 38px;
+}
+
+.header-league-status {
+  margin: 0;
+  align-self: end;
+  max-width: none;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.header-actions button {
+  min-height: 46px;
+}
+
+/* 旧 game-date-bar は使用しない */
+.game-date-bar {
+  display: none !important;
+}
+
+/* ヘッダー統合分だけメイン画面を広げる */
+.app-layout {
+  height: calc(100vh - 215px) !important;
+}
+
+@media (max-width: 1180px) {
+  .compact-app-header {
+    grid-template-columns: 190px minmax(460px, 1fr) auto;
+    gap: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .header-global-settings {
+    grid-template-columns: 170px minmax(260px, 1fr);
+  }
+
+  .header-league-status {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 800px) {
+  .compact-app-header {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .header-global-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .header-actions button {
+    flex: 1;
+  }
+
+  .app-layout {
+    height: auto !important;
+  }
+}
+
+
+/* ===== Supabase 同期 / ログイン ===== */
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 10, 17, 0.94);
+}
+
+.auth-overlay.hidden {
+  display: none;
+}
+
+.auth-card {
+  width: min(440px, 94vw);
+  padding: 22px;
+  border: 1px solid #32445d;
+  border-radius: 14px;
+  background: #101b2a;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
+}
+
+.auth-card h2 {
+  margin: 0 0 8px;
+  color: #f1f6fd;
+}
+
+.auth-card > p {
+  margin: 0 0 18px;
+  color: #91a5bd;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.auth-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  color: #b8c6d8;
+  font-size: 12px;
+}
+
+.auth-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.auth-message {
+  margin-top: 14px;
+  padding: 10px 11px;
+  border-radius: 8px;
+  background: #152438;
+  color: #92a8c1;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.auth-message.error {
+  color: #ff9ea4;
+}
+
+.auth-message.success {
+  color: #8fe0aa;
+}
+
+.cloud-status-row {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cloud-sync-status {
+  color: #8ca2bb;
+  font-size: 10px;
+}
+
+.cloud-sync-status.synced {
+  color: #81d69d;
+}
+
+.cloud-sync-status.syncing {
+  color: #e1c576;
+}
+
+.cloud-sync-status.error {
+  color: #ff9299;
+}
+
+.header-signout-button {
+  padding: 3px 7px;
+  border: 1px solid #32445d;
+  border-radius: 6px;
+  background: transparent;
+  color: #879ab0;
+  font-size: 9px;
+  cursor: pointer;
+}

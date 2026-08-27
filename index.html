@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FM26 Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="authOverlay" class="auth-overlay">
+  <div class="auth-card">
+    <h2>FM26 Manager</h2>
+    <p>
+      PCとタブレットで同じデータを使うため、
+      Supabaseにログインします。
+    </p>
+
+    <label>
+      メールアドレス
+      <input id="authEmail" type="email" autocomplete="email">
+    </label>
+
+    <label>
+      パスワード
+      <input id="authPassword" type="password" autocomplete="current-password">
+    </label>
+
+    <div class="auth-buttons">
+      <button id="signInButton" class="primary-button">ログイン</button>
+      <button id="signUpButton" class="edit-button">初回登録</button>
+    </div>
+
+    <div id="authMessage" class="auth-message">
+      すでにFC26側でSupabaseログイン用アカウントがある場合は、
+      同じメールアドレスとパスワードでOKです。
+    </div>
+  </div>
+</div>
+
+<header class="app-header compact-app-header">
+  <div class="header-brand">
+    <h1>FM26 Manager</h1>
+    <p>人員整理・契約管理</p>
+
+    <div class="cloud-status-row">
+      <span id="cloudSyncStatus" class="cloud-sync-status">☁ 接続確認中</span>
+      <button id="signOutButton" class="header-signout-button">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="header-global-settings">
+    <div class="header-setting-block">
+      <span class="header-setting-title">現在のゲーム内日付</span>
+      <span class="header-setting-help">年齢・契約残期間に適用</span>
+      <input id="globalGameDate" type="date">
+    </div>
+
+    <div class="header-setting-block header-league-block">
+      <span class="header-setting-title">所属リーグ</span>
+      <span class="header-setting-help">リアル相場データの基準</span>
+
+      <div class="league-select-row">
+        <select id="globalCountry"></select>
+        <select id="globalLeague"></select>
+      </div>
+    </div>
+
+    <div id="leagueDataStatus" class="league-data-status header-league-status">
+      内蔵相場データ読み込み中
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button id="deleteAllButton" class="danger-outline-button">
+      全選手削除
+    </button>
+
+    <button id="addPlayerButton" class="primary-button">
+      ＋ 新規登録
+    </button>
+  </div>
+</header>
+
+
+
+<nav id="filterBar" class="filter-bar">
+  <!-- 登録されている主戦ポジションから自動生成 -->
+</nav>
+
+<section class="summary-toolbar">
+  <div>
+    <div class="summary-title">主戦ポジション人数</div>
+    <div id="positionSummary" class="position-summary"></div>
+  </div>
+
+  <label class="sort-control">
+    並び順
+    <select id="sortSelect">
+      <option value="default">登録順</option>
+      <option value="salaryDesc">年俸 高い順</option>
+      <option value="salaryAsc">年俸 低い順</option>
+      <option value="ageAsc">年齢 若い順</option>
+      <option value="ageDesc">年齢 高い順</option>
+      <option value="currentDesc">現在能力 高い順</option>
+      <option value="potentialDesc">潜在能力 高い順</option>
+      <option value="decision">判断順</option>
+    </select>
+  </label>
+</section>
+
+<main class="app-layout">
+
+  <section class="player-list-panel">
+    <div class="panel-title">
+      <h2>選手一覧</h2>
+      <span id="playerCount">0人</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>選手名</th>
+            <th>主戦</th>
+            <th>年齢</th>
+            <th>能力</th>
+            <th>出場要求</th>
+            <th>年俸</th>
+            <th>契約残</th>
+            <th>判断</th>
+          </tr>
+        </thead>
+
+        <tbody id="playerTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <aside class="player-detail-panel">
+
+    <div class="detail-header">
+      <div>
+        <span class="position-tag">-</span>
+        <h2>選手を選択してください</h2>
+      </div>
+
+      <div class="detail-actions">
+        <button id="contractUpdateButton" class="contract-button">
+          契約更新
+        </button>
+
+        <button id="deletePlayerButton" class="danger-outline-button">
+          削除
+        </button>
+
+        <button id="editPlayerButton" class="edit-button">
+          編集
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>能力・立場</h3>
+
+      <div class="detail-grid">
+        <div>
+          <span class="label">現在能力</span>
+          <strong id="detailCurrentAbility">-</strong>
+        </div>
+
+        <div>
+          <span class="label">潜在能力</span>
+          <strong id="detailPotentialAbility">-</strong>
+        </div>
+
+        <div>
+          <span class="label">出場要求</span>
+          <strong id="detailPlayingTime">-</strong>
+        </div>
+
+        <div>
+          <span class="label">年齢</span>
+          <strong id="detailAge">-</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>ポジション</h3>
+
+      <div class="info-row">
+        <span>主戦ポジション</span>
+        <strong id="detailMainPosition">-</strong>
+      </div>
+
+      <div class="info-row">
+        <span>兼任ポジション</span>
+        <strong id="detailSecondaryPositions">-</strong>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>契約・金額</h3>
+
+      <div class="detail-grid">
+        <div>
+          <span class="label">年俸</span>
+          <strong id="detailSalary">-</strong>
+        </div>
+
+        <div>
+          <span class="label">市場価値</span>
+          <strong id="detailMarketValue">-</strong>
+        </div>
+
+        <div>
+          <span class="label">契約開始日</span>
+          <strong id="detailContractStart">-</strong>
+        </div>
+
+        <div>
+          <span class="label">契約満了日</span>
+          <strong id="detailContractEnd">-</strong>
+        </div>
+
+        <div>
+          <span class="label">契約残期間</span>
+          <strong id="detailContractRemaining">-</strong>
+        </div>
+
+        <div>
+          <span class="label">最終確認日</span>
+          <strong id="detailLastChecked">-</strong>
+        </div>
+      </div>
+
+      <div class="info-row top-space">
+        <span>契約タイプ</span>
+        <strong id="detailContractType">-</strong>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>レンタル状態</h3>
+      <div id="detailLoanStatus">自チーム所属</div>
+    </div>
+
+    <div class="detail-section">
+      <h3>判断材料</h3>
+
+      <div class="advice-box">
+        <strong id="detailAdviceTitle">-</strong>
+        <p id="detailAdviceText">
+          選手を選択すると判断材料が表示されます。
+        </p>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>判断</h3>
+      <div id="detailDecision">-</div>
+    </div>
+
+    <div class="detail-section">
+      <h3>年俸相場</h3>
+
+      <div class="salary-market-stack">
+
+        <div class="salary-market-box">
+          <div class="salary-market-heading">
+            <strong>クラブ内相場</strong>
+            <span>登録選手から自動算出</span>
+          </div>
+
+          <div class="salary-market-grid">
+            <div>
+              <span class="label">目安レンジ</span>
+              <strong id="detailSalaryMarketRange">-</strong>
+            </div>
+
+            <div>
+              <span class="label">参考中央値</span>
+              <strong id="detailSalaryMarketMedian">-</strong>
+            </div>
+
+            <div>
+              <span class="label">比較人数</span>
+              <strong id="detailSalaryMarketCount">-</strong>
+            </div>
+
+            <div>
+              <span class="label">現在年俸の評価</span>
+              <strong id="detailSalaryMarketVerdict">-</strong>
+            </div>
+          </div>
+
+          <p id="detailSalaryMarketNote" class="salary-market-note">
+            選手を選択すると相場を表示します。
+          </p>
+        </div>
+
+        <div class="salary-market-box external-market-box">
+          <div class="salary-market-heading">
+            <strong>リアル参考相場</strong>
+            <span>所属リーグ＋市場価値の内蔵参考モデル</span>
+          </div>
+
+          <div class="salary-market-grid">
+            <div>
+              <span class="label">参考レンジ</span>
+              <strong id="detailExternalSalaryRange">未設定</strong>
+            </div>
+
+            <div>
+              <span class="label">参考中央値</span>
+              <strong id="detailExternalSalaryMedian">未設定</strong>
+            </div>
+
+            <div>
+              <span class="label">基準データ</span>
+              <strong id="detailExternalSalarySource">-</strong>
+            </div>
+
+            <div>
+              <span class="label">現在年俸の評価</span>
+              <strong id="detailExternalSalaryVerdict">-</strong>
+            </div>
+          </div>
+
+          <p id="detailExternalSalaryNote" class="salary-market-note">
+            所属リーグを選ぶだけで自動計算します。
+          </p>
+
+          <button
+            id="editExternalMarketButton"
+            class="edit-button external-market-edit-button"
+          >
+            手動で上書き
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>契約更新履歴</h3>
+      <div id="contractHistoryList" class="contract-history-list">
+        <div class="history-empty">更新履歴はありません</div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>メモ</h3>
+      <div id="detailMemo">-</div>
+    </div>
+
+  </aside>
+
+</main>
+
+
+
+<!-- 外部参考相場モーダル -->
+<div id="externalMarketModal" class="modal hidden">
+  <div class="modal-content external-market-modal-content">
+
+    <div class="modal-header">
+      <div>
+        <h2>リアル参考相場を手動上書き</h2>
+        <p id="externalMarketPlayerName" class="modal-subtitle"></p>
+      </div>
+
+      <button id="closeExternalMarketModalButton" class="edit-button">
+        ×
+      </button>
+    </div>
+
+    <div class="external-market-help">
+      自動推定を使わず、この選手だけ別の参考相場を使いたい場合の上書き欄です。
+      空欄のまま保存すると自動推定に戻ります。
+    </div>
+
+    <div class="form-grid">
+
+      <div class="money-field">
+        <span class="money-label">参考レンジ 下限</span>
+
+        <div class="money-input-row">
+          <input
+            id="externalSalaryLow"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3000"
+          >
+
+          <select id="externalSalaryLowUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="money-field">
+        <span class="money-label">参考レンジ 上限</span>
+
+        <div class="money-input-row">
+          <input
+            id="externalSalaryHigh"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3800"
+          >
+
+          <select id="externalSalaryHighUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="money-field">
+        <span class="money-label">参考中央値</span>
+
+        <div class="money-input-row">
+          <input
+            id="externalSalaryMedian"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3400"
+          >
+
+          <select id="externalSalaryMedianUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <label>
+        出典・メモ
+        <input
+          id="externalSalarySource"
+          type="text"
+          placeholder="例：3. Liga / Transfermarkt参考"
+        >
+      </label>
+
+    </div>
+
+    <div class="external-market-preview">
+      <h3>比較プレビュー</h3>
+      <div id="externalMarketPreview">
+        金額を入れると現在年俸との比較が表示されます。
+      </div>
+    </div>
+
+    <button id="saveExternalMarketButton" class="primary-button">
+      手動相場を保存
+    </button>
+
+  </div>
+</div>
+
+<!-- 契約更新モーダル -->
+<div id="contractModal" class="modal hidden">
+  <div class="modal-content contract-modal-content">
+
+    <div class="modal-header">
+      <div>
+        <h2>契約更新</h2>
+        <p id="contractPlayerName" class="modal-subtitle"></p>
+      </div>
+
+      <button id="closeContractModalButton" class="edit-button">
+        ×
+      </button>
+    </div>
+
+    <div class="contract-current-box">
+      <h3>現在の契約</h3>
+
+      <div class="contract-current-grid">
+        <div>
+          <span>年俸</span>
+          <strong id="currentContractSalary">-</strong>
+        </div>
+
+        <div>
+          <span>契約開始日</span>
+          <strong id="currentContractStart">-</strong>
+        </div>
+
+        <div>
+          <span>契約満了日</span>
+          <strong id="currentContractEnd">-</strong>
+        </div>
+
+        <div>
+          <span>出場要求</span>
+          <strong id="currentContractPlayingTime">-</strong>
+        </div>
+
+        <div>
+          <span>契約タイプ</span>
+          <strong id="currentContractType">-</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="money-field">
+        <span class="money-label">新しい年俸</span>
+
+        <div class="money-input-row">
+          <input
+            id="contractNewSalary"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3500"
+          >
+
+          <select id="contractNewSalaryUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <label>
+        新しい契約開始日
+        <input id="contractNewStart" type="date">
+      </label>
+
+      <label>
+        新しい契約満了日
+        <input id="contractNewEnd" type="date">
+      </label>
+
+      <label>
+        新しい出場要求
+        <select id="contractNewPlayingTime"></select>
+      </label>
+
+      <label>
+        新しい契約タイプ
+        <input
+          id="contractNewType"
+          type="text"
+          placeholder="例：フルタイム"
+        >
+      </label>
+
+      <label>
+        更新確認日（現在のゲーム内日付）
+        <input id="contractUpdateDate" type="date" readonly>
+      </label>
+
+    </div>
+
+    <div class="salary-check-panel">
+      <h3>要求年俸チェック</h3>
+
+      <div class="money-field">
+        <span class="money-label">相手の要求年俸（任意）</span>
+
+        <div class="money-input-row">
+          <input
+            id="requestedSalary"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3500"
+          >
+
+          <select id="requestedSalaryUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="requestedSalaryVerdict" class="requested-salary-verdict">
+        金額を入れると相場と比較します。
+      </div>
+    </div>
+
+    <div class="contract-preview">
+      <h3>変更内容</h3>
+      <div id="contractChangePreview">
+        変更内容を入力するとここに表示されます。
+      </div>
+    </div>
+
+    <button id="saveContractUpdateButton" class="primary-button">
+      契約更新を保存
+    </button>
+
+  </div>
+</div>
+
+<div id="playerModal" class="modal hidden">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>選手を新規登録</h2>
+
+      <button id="closeModalButton" class="edit-button">
+        ×
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <label>
+        選手名
+        <input id="playerName" type="text">
+      </label>
+
+      <div class="birthdate-field">
+        <span class="money-label">生年月日</span>
+
+        <div class="birthdate-input-row">
+          <input
+            id="birthYear"
+            type="number"
+            inputmode="numeric"
+            min="1900"
+            max="2100"
+            maxlength="4"
+            placeholder="年"
+          >
+
+          <span>/</span>
+
+          <input
+            id="birthMonth"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="12"
+            maxlength="2"
+            placeholder="月"
+          >
+
+          <span>/</span>
+
+          <input
+            id="birthDay"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="31"
+            maxlength="2"
+            placeholder="日"
+          >
+        </div>
+
+        <input id="birthDate" type="hidden">
+      </div>
+
+      <label>
+        年齢（生年月日が分からない場合）
+        <input
+          id="playerAge"
+          type="number"
+          min="15"
+          max="60"
+          placeholder="任意"
+        >
+      </label>
+
+      <label>
+        主戦ポジション
+        <input id="mainPosition" type="text" placeholder="例：AMR">
+      </label>
+
+      <div class="position-playing-row">
+        <label>
+          兼任ポジション
+          <input
+            id="secondaryPositions"
+            type="text"
+            placeholder="例：AML,AMC,ST"
+          >
+        </label>
+
+        <label>
+          出場要求
+          <select id="playingTime"></select>
+        </label>
+      </div>
+
+
+      <div class="ability-pair-row">
+<div class="ability-input-group">
+        <div class="ability-group-title">
+          現在能力
+          <small>黄色★＝確定 / 灰色★込み＝上限</small>
+        </div>
+
+        <label>
+          確定
+          <select id="currentAbilityCertain"></select>
+        </label>
+
+        <label>
+          上限
+          <select id="currentAbilityMax"></select>
+        </label>
+      </div>
+<div class="ability-input-group">
+        <div class="ability-group-title">
+          潜在能力
+          <small>黄色★＝確定 / 灰色★込み＝上限</small>
+        </div>
+
+        <label>
+          確定
+          <select id="potentialAbilityCertain"></select>
+        </label>
+
+        <label>
+          上限
+          <select id="potentialAbilityMax"></select>
+        </label>
+      </div>
+      </div>
+
+
+
+      <div class="money-field">
+        <span class="money-label">年俸</span>
+
+        <div class="money-input-row">
+          <input
+            id="salary"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3500"
+          >
+
+          <select id="salaryUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="money-field">
+        <span class="money-label">市場価値</span>
+
+        <div class="money-input-row">
+          <input
+            id="marketValue"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例：3500"
+          >
+
+          <select id="marketValueUnit">
+            <option value="万" selected>万</option>
+            <option value="億">億</option>
+          </select>
+        </div>
+      </div>
+
+      <label>
+        契約開始日
+        <input id="contractStart" type="date">
+      </label>
+
+      <label>
+        契約満了日
+        <input id="contractEnd" type="date">
+      </label>
+
+      <label>
+        最終確認日
+        <input id="lastChecked" type="date" readonly>
+      </label>
+
+      <label>
+        契約タイプ
+        <input
+          id="contractType"
+          type="text"
+          value="フルタイム"
+          placeholder="例：フルタイム"
+        >
+      </label>
+
+    </div>
+
+    <div class="detail-section">
+      <h3>レンタル状態</h3>
+
+      <div class="toggle-buttons">
+        <button id="loanInButton" class="toggle-button">
+          レンタル中
+        </button>
+
+        <button id="loanOutButton" class="toggle-button">
+          レンタル移籍中
+        </button>
+      </div>
+
+      <small class="help-text">
+        どちらも未選択の場合は自チーム所属
+      </small>
+    </div>
+
+    <div class="detail-section">
+      <h3>判断</h3>
+
+      <div class="decision-buttons">
+        <button
+          class="decision-select-button"
+          data-decision="残す"
+        >
+          残す
+        </button>
+
+        <button
+          class="decision-select-button"
+          data-decision="売却"
+        >
+          売却
+        </button>
+
+        <button
+          class="decision-select-button"
+          data-decision="レンタル"
+        >
+          レンタル
+        </button>
+
+        <button
+          class="decision-select-button active"
+          data-decision="保留"
+        >
+          保留
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>メモ</h3>
+
+      <textarea id="memo" placeholder="任意"></textarea>
+    </div>
+
+    <button id="savePlayerButton" class="primary-button">
+      保存
+    </button>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

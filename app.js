@@ -1,3 +1,4 @@
+console.log("FM26 Manager build 20260828-0135");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 

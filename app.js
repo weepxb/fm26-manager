@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260828-0135");
+console.log("FM26 Manager build 20260828-salary-v2");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -864,6 +864,8 @@ const LEAGUE_CATALOG = {
 */
 const LEAGUE_REAL_DATA = {
   "Germany|bundesliga": {
+    referenceAnnualSalaryYen: 483500000,
+    averageMarketValueYen: 1700000000,
     countryLabel: "ドイツ",
     leagueLabel: "Bundesliga",
     season: "2025/26参考",
@@ -873,6 +875,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Germany|2-bundesliga": {
+    referenceAnnualSalaryYen: 85000000,
+    averageMarketValueYen: 350000000,
     countryLabel: "ドイツ",
     leagueLabel: "2. Bundesliga",
     season: "2025/26参考",
@@ -882,6 +886,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Germany|3-liga": {
+    annualSalaryMedianYen: 18700000,
+    averageMarketValueYen: 50500000,
     countryLabel: "ドイツ",
     leagueLabel: "3. Liga",
     season: "2025/26〜2026参考",
@@ -891,6 +897,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "England|premier-league": {
+    referenceAnnualSalaryYen: 650000000,
+    averageMarketValueYen: 2200000000,
     countryLabel: "イングランド",
     leagueLabel: "Premier League",
     season: "2025/26参考",
@@ -900,6 +908,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "England|championship": {
+    referenceAnnualSalaryYen: 145000000,
+    averageMarketValueYen: 500000000,
     countryLabel: "イングランド",
     leagueLabel: "Championship",
     season: "2025/26参考",
@@ -909,6 +919,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "England|league-one": {
+    referenceAnnualSalaryYen: 42000000,
+    averageMarketValueYen: 130000000,
     countryLabel: "イングランド",
     leagueLabel: "League One",
     season: "2025/26参考",
@@ -918,6 +930,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "England|league-two": {
+    referenceAnnualSalaryYen: 26000000,
+    averageMarketValueYen: 80000000,
     countryLabel: "イングランド",
     leagueLabel: "League Two",
     season: "2025/26参考",
@@ -927,6 +941,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "France|ligue-1": {
+    referenceAnnualSalaryYen: 170000000,
+    averageMarketValueYen: 850000000,
     countryLabel: "フランス",
     leagueLabel: "Ligue 1",
     season: "2025/26参考",
@@ -936,6 +952,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "France|ligue-2": {
+    referenceAnnualSalaryYen: 52000000,
+    averageMarketValueYen: 180000000,
     countryLabel: "フランス",
     leagueLabel: "Ligue 2",
     season: "2025/26参考",
@@ -945,6 +963,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Spain|laliga": {
+    referenceAnnualSalaryYen: 190000000,
+    averageMarketValueYen: 900000000,
     countryLabel: "スペイン",
     leagueLabel: "LaLiga",
     season: "2025/26参考",
@@ -954,6 +974,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Spain|laliga2": {
+    referenceAnnualSalaryYen: 52000000,
+    averageMarketValueYen: 180000000,
     countryLabel: "スペイン",
     leagueLabel: "LaLiga 2",
     season: "2025/26参考",
@@ -963,6 +985,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Italy|serie-a": {
+    referenceAnnualSalaryYen: 180000000,
+    averageMarketValueYen: 800000000,
     countryLabel: "イタリア",
     leagueLabel: "Serie A",
     season: "2025/26参考",
@@ -972,6 +996,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Italy|serie-b": {
+    referenceAnnualSalaryYen: 48000000,
+    averageMarketValueYen: 170000000,
     countryLabel: "イタリア",
     leagueLabel: "Serie B",
     season: "2025/26参考",
@@ -981,6 +1007,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Netherlands|eredivisie": {
+    referenceAnnualSalaryYen: 72000000,
+    averageMarketValueYen: 350000000,
     countryLabel: "オランダ",
     leagueLabel: "Eredivisie",
     season: "2025/26参考",
@@ -990,6 +1018,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Netherlands|eerste-divisie": {
+    referenceAnnualSalaryYen: 26000000,
+    averageMarketValueYen: 90000000,
     countryLabel: "オランダ",
     leagueLabel: "Eerste Divisie",
     season: "2025/26参考",
@@ -999,6 +1029,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Portugal|primeira-liga": {
+    referenceAnnualSalaryYen: 62000000,
+    averageMarketValueYen: 300000000,
     countryLabel: "ポルトガル",
     leagueLabel: "Primeira Liga",
     season: "2025/26参考",
@@ -1008,6 +1040,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Portugal|liga-portugal-2": {
+    referenceAnnualSalaryYen: 22000000,
+    averageMarketValueYen: 75000000,
     countryLabel: "ポルトガル",
     leagueLabel: "Liga Portugal 2",
     season: "2025/26参考",
@@ -1017,6 +1051,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Belgium|pro-league": {
+    referenceAnnualSalaryYen: 72000000,
+    averageMarketValueYen: 320000000,
     countryLabel: "ベルギー",
     leagueLabel: "Jupiler Pro League",
     season: "2025/26参考",
@@ -1026,6 +1062,8 @@ const LEAGUE_REAL_DATA = {
   },
 
   "Belgium|challenger-pro-league": {
+    referenceAnnualSalaryYen: 26000000,
+    averageMarketValueYen: 90000000,
     countryLabel: "ベルギー",
     leagueLabel: "Challenger Pro League",
     season: "2025/26参考",
@@ -1220,45 +1258,136 @@ function buildAutomaticRealMarket(player) {
   const data =
     getLeagueRealData();
 
-  const marketValue =
-    Number(player.marketValue);
+  if (!data) {
+    return null;
+  }
+
+  /*
+    v2:
+    市場価値×一定比率で年俸を出す方式は廃止。
+    リーグの給与水準を土台にして、
+    出場要求・年齢・ポジションを主補正、
+    市場価値は弱い補正だけに使う。
+  */
+
+  const leagueMedianSalaryYen =
+    Number(
+      data.annualSalaryMedianYen ||
+      data.referenceAnnualSalaryYen
+    );
 
   if (
-    !data ||
-    !Number.isFinite(marketValue) ||
-    marketValue <= 0
+    !Number.isFinite(
+      leagueMedianSalaryYen
+    ) ||
+    leagueMedianSalaryYen <= 0
   ) {
     return null;
   }
 
-  const base =
-    marketValue *
-    data.salaryToMarketRatio;
+  const playingTimeFactors = {
+    "スター選手": 1.45,
+    "重要な選手": 1.25,
+    "先発レギュラー": 1.10,
+    "正ゴールキーパー": 1.05,
+    "カップ戦要員ゴールキーパー": 0.85,
+    "バックアッパー": 0.78,
+    "バックアップ": 0.72,
+    "当落線上の選手": 0.72,
+    "有望選手": 0.60,
+    "若手": 0.50,
+    "要求能力に満たない余剰人員": 0.42
+  };
 
-  const adjusted =
-    base *
+  const playingTimeFactor =
+    playingTimeFactors[
+      player.playingTime
+    ] || 1;
+
+  const age =
+    getPlayerDisplayAge(player);
+
+  let ageFactor = 1;
+
+  if (
+    age !== null &&
+    age !== undefined
+  ) {
+    if (age <= 19) {
+      ageFactor = 0.82;
+    } else if (age <= 22) {
+      ageFactor = 0.90;
+    } else if (age <= 29) {
+      ageFactor = 1.00;
+    } else if (age <= 32) {
+      ageFactor = 0.97;
+    } else {
+      ageFactor = 0.90;
+    }
+  }
+
+  const positionFactor =
     getPositionFactor(
       player.mainPosition,
       data
-    ) *
-    getAgeFactor(player);
+    );
 
-  /*
-    リアル給与は推定値・クラブ差が大きいため、
-    点ではなく広めのレンジにする。
-  */
+  let marketValueFactor = 1;
+
+  const playerMarketValue =
+    Number(player.marketValue);
+
+  const leagueAverageMarketValueYen =
+    Number(
+      data.averageMarketValueYen
+    );
+
+  if (
+    Number.isFinite(playerMarketValue) &&
+    playerMarketValue > 0 &&
+    Number.isFinite(
+      leagueAverageMarketValueYen
+    ) &&
+    leagueAverageMarketValueYen > 0
+  ) {
+    const ratio =
+      playerMarketValue /
+      leagueAverageMarketValueYen;
+
+    const weakAdjustment =
+      0.94 +
+      Math.log2(
+        Math.max(ratio, 0.05)
+      ) * 0.055;
+
+    marketValueFactor =
+      Math.min(
+        1.18,
+        Math.max(
+          0.80,
+          weakAdjustment
+        )
+      );
+  }
+
+  const middle =
+    Math.round(
+      leagueMedianSalaryYen *
+      playingTimeFactor *
+      ageFactor *
+      positionFactor *
+      marketValueFactor
+    );
+
   const low =
     Math.round(
-      adjusted * 0.72
+      middle * 0.76
     );
 
   const high =
     Math.round(
-      adjusted * 1.35
+      middle * 1.28
     );
-
-  const middle =
-    Math.round(adjusted);
 
   return {
     low,
@@ -1518,8 +1647,8 @@ function renderExternalSalaryMarket(player) {
   if (market.automatic) {
     note.textContent =
       market.exactSalaryData
-        ? "公開されているリーグ市場価値・給与サンプルを基準に、市場価値・年齢・ポジションから推定しています。クラブ差が大きいためレンジは広めです。"
-        : "公開データとリーグ階層から作った内蔵参考モデルです。厳密な給与DBではないため、契約判断の目安として使ってください。";
+        ? "リーグの給与水準を土台に、出場要求・年齢・ポジションを補正しています。市場価値は弱い補正だけに使っています。クラブ差が大きいためレンジは広めです。"
+        : "リーグの給与水準を土台にした内蔵参考モデルです。市場価値だけで年俸を決めず、出場要求・年齢・ポジションを重視しています。厳密な給与DBではないため目安として使ってください。";
   } else {
     note.textContent =
       "この選手は手動で設定した参考相場を使用しています。";

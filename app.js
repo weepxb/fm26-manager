@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260828-salary-v2");
+console.log("FM26 Manager build 20260828-lastchecked-game-date");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -2896,6 +2896,9 @@ function resetForm() {
     new Date().toISOString().slice(0, 10);
   document.getElementById("contractType").value =
     "フルタイム";
+
+  document.getElementById("lastChecked").value =
+    getGlobalGameDate();
   document.getElementById("memo").value = "";
 
   selectedDecision = "保留";

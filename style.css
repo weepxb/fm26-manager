@@ -1389,3 +1389,32 @@ select {
     grid-column: auto;
   }
 }
+
+
+/* ===== タブレット：新規登録モーダルを上から表示 ===== */
+
+@media (max-width: 1400px) {
+  .modal {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .modal-content {
+    margin-top: 0;
+    max-height: calc(100vh - 28px);
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 801px) and (max-width: 1400px) {
+  .modal {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .modal-content {
+    max-height: calc(100vh - 16px);
+  }
+}

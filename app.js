@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260828-lastchecked-game-date");
+console.log("FM26 Manager build 20260830-modal-top");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -2762,8 +2762,32 @@ saveContractUpdateButton.addEventListener(
   }
 );
 
+
+function scrollModalToTop(modalElement) {
+  if (!modalElement) {
+    return;
+  }
+
+  modalElement.scrollTop = 0;
+
+  const content =
+    modalElement.querySelector(
+      ".modal-content"
+    );
+
+  if (content) {
+    content.scrollTop = 0;
+  }
+}
+
 function openModal() {
-  playerModal.classList.remove("hidden");
+  playerModal.classList.remove(
+    "hidden"
+  );
+
+  requestAnimationFrame(() => {
+    scrollModalToTop(playerModal);
+  });
 }
 
 function closeModal() {

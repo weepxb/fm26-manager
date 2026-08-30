@@ -1513,3 +1513,50 @@ select {
   color: #ffb15c !important;
   font-weight: 700;
 }
+
+
+/* ===== 選手一覧：項目名クリックで並び替え ===== */
+
+.hidden-sort-select {
+  display: none !important;
+}
+
+.summary-toolbar {
+  justify-content: flex-start;
+}
+
+.sortable-header {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  padding-right: 18px !important;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.sortable-header:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sortable-header.sort-asc::after {
+  content: "▲";
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #62b5ff;
+  font-size: 8px;
+}
+
+.sortable-header.sort-desc::after {
+  content: "▼";
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #62b5ff;
+  font-size: 8px;
+}

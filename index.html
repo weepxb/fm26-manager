@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM26 Manager</title>
-  <link rel="stylesheet" href="style.css?v=20260830-contract-8month-warning">
+  <link rel="stylesheet" href="style.css?v=20260830-click-header-sort">
 </head>
 
 <body>
@@ -95,19 +95,14 @@
     <div id="positionSummary" class="position-summary"></div>
   </div>
 
-  <label class="sort-control">
-    並び順
-    <select id="sortSelect">
-      <option value="default">登録順</option>
-      <option value="salaryDesc">年俸 高い順</option>
-      <option value="salaryAsc">年俸 低い順</option>
-      <option value="ageAsc">年齢 若い順</option>
-      <option value="ageDesc">年齢 高い順</option>
-      <option value="currentDesc">現在能力 高い順</option>
-      <option value="potentialDesc">潜在能力 高い順</option>
-      <option value="decision">判断順</option>
-    </select>
-  </label>
+  <select
+    id="sortSelect"
+    class="hidden-sort-select"
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <option value="default">登録順</option>
+  </select>
 </section>
 
 <main class="app-layout">
@@ -122,14 +117,14 @@
       <table>
         <thead>
           <tr>
-            <th>選手名</th>
-            <th>主戦</th>
-            <th>年齢</th>
-            <th>能力</th>
-            <th>出場要求</th>
-            <th>年俸</th>
-            <th>契約残</th>
-            <th>判断</th>
+            <th class="sortable-header" data-sort-key="name">選手名</th>
+            <th class="sortable-header" data-sort-key="position">主戦</th>
+            <th class="sortable-header" data-sort-key="age">年齢</th>
+            <th class="sortable-header" data-sort-key="current">能力</th>
+            <th class="sortable-header" data-sort-key="playingTime">出場要求</th>
+            <th class="sortable-header" data-sort-key="salary">年俸</th>
+            <th class="sortable-header" data-sort-key="contract">契約残</th>
+            <th class="sortable-header" data-sort-key="decision">判断</th>
           </tr>
         </thead>
 
@@ -878,7 +873,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=20260830-contract-8month-warning"></script>
+<script src="app.js?v=20260830-click-header-sort"></script>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-contract-8month-warning");
+console.log("FM26 Manager build 20260830-click-header-sort");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -3593,28 +3593,95 @@ deleteAllButton.addEventListener("click", () => {
   );
 });
 
+function getContractSortDays(player) {
+  if (
+    !player.contractEnd ||
+    !getGlobalGameDate()
+  ) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const end =
+    new Date(
+      `${player.contractEnd}T00:00:00`
+    );
+
+  const current =
+    new Date(
+      `${getGlobalGameDate()}T00:00:00`
+    );
+
+  if (
+    Number.isNaN(end.getTime()) ||
+    Number.isNaN(current.getTime())
+  ) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  return Math.round(
+    (end - current) /
+    (1000 * 60 * 60 * 24)
+  );
+}
+
+function getDecisionOrder(value) {
+  const order = {
+    "残す": 1,
+    "保留": 2,
+    "レンタル": 3,
+    "売却": 4
+  };
+
+  return order[value] || 99;
+}
+
 function getSortedPlayers(list) {
   const result = [...list];
 
-  if (currentSort === "salaryDesc") {
+  const textCompare =
+    (a, b) =>
+      String(a || "").localeCompare(
+        String(b || ""),
+        "ja"
+      );
+
+  if (currentSort === "nameAsc") {
     result.sort(
       (a, b) =>
-        (Number(b.salary) || 0) -
-        (Number(a.salary) || 0)
+        textCompare(
+          a.name,
+          b.name
+        )
     );
   }
 
-  if (currentSort === "salaryAsc") {
+  if (currentSort === "nameDesc") {
     result.sort(
-      (a, b) => {
-        const aSalary =
-          Number(a.salary) || Infinity;
+      (a, b) =>
+        textCompare(
+          b.name,
+          a.name
+        )
+    );
+  }
 
-        const bSalary =
-          Number(b.salary) || Infinity;
+  if (currentSort === "positionAsc") {
+    result.sort(
+      (a, b) =>
+        textCompare(
+          a.mainPosition,
+          b.mainPosition
+        )
+    );
+  }
 
-        return aSalary - bSalary;
-      }
+  if (currentSort === "positionDesc") {
+    result.sort(
+      (a, b) =>
+        textCompare(
+          b.mainPosition,
+          a.mainPosition
+        )
     );
   }
 
@@ -3634,52 +3701,219 @@ function getSortedPlayers(list) {
     );
   }
 
+  if (currentSort === "currentAsc") {
+    result.sort(
+      (a, b) =>
+        Number(a.currentAbilityCertain || 0) -
+        Number(b.currentAbilityCertain || 0)
+    );
+  }
+
   if (currentSort === "currentDesc") {
     result.sort(
       (a, b) =>
-        (
-          Number(b.currentAbilityCertain) -
-          Number(a.currentAbilityCertain)
-        ) ||
-        (
-          Number(b.currentAbilityMax) -
-          Number(a.currentAbilityMax)
+        Number(b.currentAbilityCertain || 0) -
+        Number(a.currentAbilityCertain || 0)
+    );
+  }
+
+  if (currentSort === "playingTimeAsc") {
+    result.sort(
+      (a, b) =>
+        textCompare(
+          a.playingTime,
+          b.playingTime
         )
     );
   }
 
-  if (currentSort === "potentialDesc") {
+  if (currentSort === "playingTimeDesc") {
     result.sort(
       (a, b) =>
-        (
-          Number(b.potentialAbilityCertain) -
-          Number(a.potentialAbilityCertain)
-        ) ||
-        (
-          Number(b.potentialAbilityMax) -
-          Number(a.potentialAbilityMax)
+        textCompare(
+          b.playingTime,
+          a.playingTime
         )
     );
   }
 
-  if (currentSort === "decision") {
-    const order = {
-      "残す": 1,
-      "保留": 2,
-      "レンタル": 3,
-      "売却": 4
-    };
+  if (currentSort === "salaryAsc") {
+    result.sort(
+      (a, b) => {
+        const aSalary =
+          Number(a.salary);
 
+        const bSalary =
+          Number(b.salary);
+
+        const safeA =
+          Number.isFinite(aSalary) &&
+          aSalary > 0
+            ? aSalary
+            : Number.POSITIVE_INFINITY;
+
+        const safeB =
+          Number.isFinite(bSalary) &&
+          bSalary > 0
+            ? bSalary
+            : Number.POSITIVE_INFINITY;
+
+        return safeA - safeB;
+      }
+    );
+  }
+
+  if (currentSort === "salaryDesc") {
     result.sort(
       (a, b) =>
-        (order[a.decision] || 99) -
-        (order[b.decision] || 99)
+        (Number(b.salary) || 0) -
+        (Number(a.salary) || 0)
+    );
+  }
+
+  if (currentSort === "contractAsc") {
+    result.sort(
+      (a, b) =>
+        getContractSortDays(a) -
+        getContractSortDays(b)
+    );
+  }
+
+  if (currentSort === "contractDesc") {
+    result.sort(
+      (a, b) =>
+        getContractSortDays(b) -
+        getContractSortDays(a)
+    );
+  }
+
+  if (currentSort === "decisionAsc") {
+    result.sort(
+      (a, b) =>
+        getDecisionOrder(a.decision) -
+        getDecisionOrder(b.decision)
+    );
+  }
+
+  if (currentSort === "decisionDesc") {
+    result.sort(
+      (a, b) =>
+        getDecisionOrder(b.decision) -
+        getDecisionOrder(a.decision)
     );
   }
 
   return result;
 }
 
+function getHeaderSortState(key) {
+  const states = {
+    name: ["nameAsc", "nameDesc"],
+    position: [
+      "positionAsc",
+      "positionDesc"
+    ],
+    age: ["ageAsc", "ageDesc"],
+    current: [
+      "currentAsc",
+      "currentDesc"
+    ],
+    playingTime: [
+      "playingTimeAsc",
+      "playingTimeDesc"
+    ],
+    salary: [
+      "salaryAsc",
+      "salaryDesc"
+    ],
+    contract: [
+      "contractAsc",
+      "contractDesc"
+    ],
+    decision: [
+      "decisionAsc",
+      "decisionDesc"
+    ]
+  };
+
+  return states[key] || [];
+}
+
+function updateSortHeaderDisplay() {
+  document
+    .querySelectorAll(
+      ".sortable-header"
+    )
+    .forEach(header => {
+      header.classList.remove(
+        "sort-asc",
+        "sort-desc"
+      );
+
+      const [
+        ascValue,
+        descValue
+      ] =
+        getHeaderSortState(
+          header.dataset.sortKey
+        );
+
+      if (currentSort === ascValue) {
+        header.classList.add(
+          "sort-asc"
+        );
+      }
+
+      if (currentSort === descValue) {
+        header.classList.add(
+          "sort-desc"
+        );
+      }
+    });
+}
+
+function cycleHeaderSort(key) {
+  const [
+    ascValue,
+    descValue
+  ] =
+    getHeaderSortState(key);
+
+  if (!ascValue) {
+    return;
+  }
+
+  if (currentSort === ascValue) {
+    currentSort = descValue;
+  } else if (
+    currentSort === descValue
+  ) {
+    currentSort = "default";
+  } else {
+    currentSort = ascValue;
+  }
+
+  updateSortHeaderDisplay();
+
+  renderPlayers(
+    getActiveFilter()
+  );
+}
+
+document
+  .querySelectorAll(
+    ".sortable-header"
+  )
+  .forEach(header => {
+    header.addEventListener(
+      "click",
+      () => {
+        cycleHeaderSort(
+          header.dataset.sortKey
+        );
+      }
+    );
+  });
 
 function getAmateurBadge(player) {
   if (!player?.amateur) {

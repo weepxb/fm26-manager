@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM26 Manager</title>
-  <link rel="stylesheet" href="style.css?v=20260830-modal-top">
+  <link rel="stylesheet" href="style.css?v=20260830-current-ability-single">
 </head>
 
 <body>
@@ -699,22 +699,16 @@
 
 
       <div class="ability-pair-row">
-<div class="ability-input-group">
-        <div class="ability-group-title">
-          現在能力
-          <small>黄色★＝確定 / 灰色★込み＝上限</small>
+<div class="ability-input-group current-ability-single">
+          <div class="ability-group-title">
+            現在能力
+          </div>
+
+          <label>
+            能力
+            <select id="currentAbilityCertain"></select>
+          </label>
         </div>
-
-        <label>
-          確定
-          <select id="currentAbilityCertain"></select>
-        </label>
-
-        <label>
-          上限
-          <select id="currentAbilityMax"></select>
-        </label>
-      </div>
 <div class="ability-input-group">
         <div class="ability-group-title">
           潜在能力
@@ -866,7 +860,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=20260830-modal-top"></script>
+<script src="app.js?v=20260830-current-ability-single"></script>
 
 </body>
 </html>

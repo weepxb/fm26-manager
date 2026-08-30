@@ -1418,3 +1418,15 @@ select {
     max-height: calc(100vh - 16px);
   }
 }
+
+
+/* ===== 現在能力：上限なし ===== */
+
+.current-ability-single {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-ability-single > label {
+  margin-top: 0;
+}

@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-modal-top");
+console.log("FM26 Manager build 20260830-current-ability-single");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -140,8 +140,6 @@ const externalMarketPreview =
 
 const currentAbilityCertain =
   document.getElementById("currentAbilityCertain");
-const currentAbilityMax =
-  document.getElementById("currentAbilityMax");
 const potentialAbilityCertain =
   document.getElementById("potentialAbilityCertain");
 const potentialAbilityMax =
@@ -4846,6 +4844,9 @@ players = players.map(player => {
     converted.potentialAbilityMax =
       converted.potentialAbilityCertain;
   }
+
+  converted.currentAbilityMax =
+    converted.currentAbilityCertain;
 
   if (
     converted.birthDate === undefined

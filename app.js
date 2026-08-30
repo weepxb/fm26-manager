@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-amateur-v2");
+console.log("FM26 Manager build 20260830-amateur-badge");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -3647,6 +3647,15 @@ function getSortedPlayers(list) {
   return result;
 }
 
+
+function getAmateurBadge(player) {
+  if (!player?.amateur) {
+    return "";
+  }
+
+  return '<span class="amateur-badge">アマ</span>';
+}
+
 function renderPlayers(filter = "ALL") {
   playerTableBody.innerHTML = "";
 
@@ -3680,7 +3689,12 @@ function renderPlayers(filter = "ALL") {
     }
 
     row.innerHTML = `
-      <td>${escapeHtml(player.name)}</td>
+      <td>
+        <span class="player-name-with-badge">
+          <span>${escapeHtml(player.name)}</span>
+          ${getAmateurBadge(player)}
+        </span>
+      </td>
       <td>${escapeHtml(player.mainPosition)}</td>
       <td>${getPlayerDisplayAge(player) ?? "-"}</td>
       <td>

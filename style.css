@@ -1420,7 +1420,11 @@ select {
 }
 
 
-/* ===== 現在能力：上限なし ===== */
+/* ===== 現在能力：上限は表示しない ===== */
+
+.hidden-current-ability-max {
+  display: none !important;
+}
 
 .current-ability-single {
   display: flex;
@@ -1428,5 +1432,5 @@ select {
 }
 
 .current-ability-single > label {
-  margin-top: 0;
+  margin: 0;
 }

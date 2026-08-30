@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM26 Manager</title>
-  <link rel="stylesheet" href="style.css?v=20260830-current-ability-single">
+  <link rel="stylesheet" href="style.css?v=20260830-current-ability-safe">
 </head>
 
 <body>
@@ -708,6 +708,13 @@
             能力
             <select id="currentAbilityCertain"></select>
           </label>
+
+          <select
+            id="currentAbilityMax"
+            class="hidden-current-ability-max"
+            aria-hidden="true"
+            tabindex="-1"
+          ></select>
         </div>
 <div class="ability-input-group">
         <div class="ability-group-title">
@@ -860,7 +867,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=20260830-current-ability-single"></script>
+<script src="app.js?v=20260830-current-ability-safe"></script>
 
 </body>
 </html>

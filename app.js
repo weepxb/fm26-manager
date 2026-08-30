@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-current-ability-single");
+console.log("FM26 Manager build 20260830-current-ability-safe");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -140,6 +140,8 @@ const externalMarketPreview =
 
 const currentAbilityCertain =
   document.getElementById("currentAbilityCertain");
+const currentAbilityMax =
+  document.getElementById("currentAbilityMax");
 const potentialAbilityCertain =
   document.getElementById("potentialAbilityCertain");
 const potentialAbilityMax =
@@ -724,6 +726,17 @@ currentAbilityMax.addEventListener("change", () => {
     currentAbilityMax
   );
 });
+
+
+function syncCurrentAbilityMaxToCertain() {
+  currentAbilityMax.value =
+    currentAbilityCertain.value;
+}
+
+currentAbilityCertain.addEventListener(
+  "change",
+  syncCurrentAbilityMaxToCertain
+);
 
 potentialAbilityCertain.addEventListener("change", () => {
   keepMaxAtLeastCertain(
@@ -3296,7 +3309,7 @@ editPlayerButton.addEventListener("click", () => {
 
   fillAbilitySelect(
     currentAbilityMax,
-    player.currentAbilityMax
+    player.currentAbilityCertain
   );
 
   fillAbilitySelect(
@@ -4827,6 +4840,9 @@ players = players.map(player => {
       converted.currentAbilityCertain;
   }
 
+  converted.currentAbilityMax =
+    converted.currentAbilityCertain;
+
   if (
     converted.potentialAbilityCertain ===
     undefined
@@ -4844,9 +4860,6 @@ players = players.map(player => {
     converted.potentialAbilityMax =
       converted.potentialAbilityCertain;
   }
-
-  converted.currentAbilityMax =
-    converted.currentAbilityCertain;
 
   if (
     converted.birthDate === undefined

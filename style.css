@@ -1505,3 +1505,11 @@ select {
   font-weight: 700;
   line-height: 1.2;
 }
+
+
+/* ===== 契約残り8か月未満の警告 ===== */
+
+.contract-expiring-soon {
+  color: #ffb15c !important;
+  font-weight: 700;
+}

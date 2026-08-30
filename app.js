@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-amateur-badge");
+console.log("FM26 Manager build 20260830-contract-8month-warning");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -677,6 +677,39 @@ function calculateContractRemaining(contractEnd, gameDate) {
   }
 
   return `${days}日`;
+}
+
+
+function isContractUnderEightMonths(
+  contractEnd,
+  gameDate
+) {
+  if (!contractEnd || !gameDate) {
+    return false;
+  }
+
+  const end =
+    new Date(`${contractEnd}T00:00:00`);
+
+  const current =
+    new Date(`${gameDate}T00:00:00`);
+
+  if (
+    Number.isNaN(end.getTime()) ||
+    Number.isNaN(current.getTime()) ||
+    end < current
+  ) {
+    return false;
+  }
+
+  const eightMonthsLater =
+    new Date(
+      current.getFullYear(),
+      current.getMonth() + 8,
+      current.getDate()
+    );
+
+  return end < eightMonthsLater;
 }
 
 function getPlayerDisplayAge(player) {
@@ -3714,7 +3747,14 @@ function renderPlayers(filter = "ALL") {
       </td>
       <td>${escapeHtml(player.playingTime)}</td>
       <td>${formatJapaneseMoney(player.salary)}</td>
-      <td>${escapeHtml(
+      <td class="${
+        isContractUnderEightMonths(
+          player.contractEnd,
+          getGlobalGameDate()
+        )
+          ? "contract-expiring-soon"
+          : ""
+      }">${escapeHtml(
         calculateContractRemaining(
           player.contractEnd,
           getGlobalGameDate()
@@ -4136,13 +4176,24 @@ function showPlayerDetail(player) {
       player.contractEnd
     );
 
-  document.getElementById(
-    "detailContractRemaining"
-  ).textContent =
+  const detailContractRemaining =
+    document.getElementById(
+      "detailContractRemaining"
+    );
+
+  detailContractRemaining.textContent =
     calculateContractRemaining(
       player.contractEnd,
       getGlobalGameDate()
     );
+
+  detailContractRemaining.classList.toggle(
+    "contract-expiring-soon",
+    isContractUnderEightMonths(
+      player.contractEnd,
+      getGlobalGameDate()
+    )
+  );
 
   document.getElementById(
     "detailLastChecked"
@@ -4210,6 +4261,11 @@ function clearPlayerDetail() {
   document.getElementById("detailContractStart").textContent = "-";
   document.getElementById("detailContractEnd").textContent = "-";
   document.getElementById("detailContractRemaining").textContent = "-";
+  document.getElementById(
+    "detailContractRemaining"
+  ).classList.remove(
+    "contract-expiring-soon"
+  );
   document.getElementById("detailLastChecked").textContent = "-";
   document.getElementById("detailContractType").textContent = "-";
   document.getElementById("detailLoanStatus").textContent =

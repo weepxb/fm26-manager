@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-click-header-sort");
+console.log("FM26 Manager build 20260830-money-decimal-display");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -1559,35 +1559,41 @@ function parseJapaneseMoney(input) {
 }
 
 function formatJapaneseMoney(value) {
+  const amount =
+    Number(value);
+
   if (
-    value === null ||
-    value === undefined ||
-    value === ""
+    !Number.isFinite(amount) ||
+    amount <= 0
   ) {
     return "-";
   }
 
-  const number = Number(value);
+  const oku =
+    amount / 100000000;
 
-  if (Number.isNaN(number)) {
-    return "-";
+  if (oku >= 1) {
+    const roundedOku =
+      Math.round(
+        oku * 100
+      ) / 100;
+
+    return `${Number(
+      roundedOku.toFixed(2)
+    )}億`;
   }
 
-  if (number >= 100000000) {
-    const oku =
-      Math.round((number / 100000000) * 100) / 100;
+  const man =
+    amount / 10000;
 
-    return `${oku}億`;
-  }
+  const roundedMan =
+    Math.round(
+      man * 10
+    ) / 10;
 
-  if (number >= 10000) {
-    const man =
-      Math.round(number / 10000);
-
-    return `${man.toLocaleString("ja-JP")}万`;
-  }
-
-  return number.toLocaleString("ja-JP");
+  return `${Number(
+    roundedMan.toFixed(1)
+  )}万`;
 }
 
 

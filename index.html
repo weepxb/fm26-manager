@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FM26 Manager</title>
-  <link rel="stylesheet" href="style.css?v=20260830-current-ability-safe">
+  <link rel="stylesheet" href="style.css?v=20260830-amateur-v2">
 </head>
 
 <body>
@@ -609,7 +609,18 @@
   <div class="modal-content">
 
     <div class="modal-header">
-      <h2>選手を新規登録</h2>
+      <div class="player-modal-title-row">
+        <h2>選手を新規登録</h2>
+
+        <button
+          id="amateurToggleButton"
+          type="button"
+          class="amateur-toggle-button"
+          aria-pressed="false"
+        >
+          アマ
+        </button>
+      </div>
 
       <button id="closeModalButton" class="edit-button">
         ×
@@ -867,7 +878,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=20260830-current-ability-safe"></script>
+<script src="app.js?v=20260830-amateur-v2"></script>
 
 </body>
 </html>

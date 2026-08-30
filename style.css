@@ -1434,3 +1434,52 @@ select {
 .current-ability-single > label {
   margin: 0;
 }
+
+
+/* ===== 新規登録：アマチュア切り替え ===== */
+
+.player-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.amateur-toggle-button {
+  min-width: 72px;
+  padding: 8px 16px;
+  border: 1px solid #49647f;
+  border-radius: 8px;
+  background: #16263a;
+  color: #c3d2e4;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.amateur-toggle-button.active {
+  border-color: #e0b35e;
+  background: #3a2d18;
+  color: #ffd784;
+}
+
+/* ===== 現在能力 / 潜在能力 の外枠サイズを統一 ===== */
+
+.ability-pair-row {
+  align-items: stretch;
+}
+
+.ability-pair-row .ability-input-group {
+  min-height: 142px;
+  height: 100%;
+}
+
+.current-ability-single {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.current-ability-single > label {
+  align-self: end;
+  margin: 0;
+}

@@ -1,4 +1,4 @@
-console.log("FM26 Manager build 20260830-current-ability-safe");
+console.log("FM26 Manager build 20260830-amateur-v2");
 const SUPABASE_URL =
   "https://jcnlczwhffefnpiugsgl.supabase.co";
 
@@ -23,6 +23,7 @@ let selectedDecision = "保留";
 let selectedLoanStatus = "none";
 let editingPlayerId = null;
 let currentSort = "default";
+let isAmateurMode = false;
 
 const authOverlay =
   document.getElementById("authOverlay");
@@ -47,6 +48,8 @@ const playerModal = document.getElementById("playerModal");
 const addPlayerButton = document.getElementById("addPlayerButton");
 const deleteAllButton = document.getElementById("deleteAllButton");
 const closeModalButton = document.getElementById("closeModalButton");
+const amateurToggleButton =
+  document.getElementById("amateurToggleButton");
 const savePlayerButton = document.getElementById("savePlayerButton");
 const editPlayerButton = document.getElementById("editPlayerButton");
 const deletePlayerButton = document.getElementById("deletePlayerButton");
@@ -2902,8 +2905,67 @@ mainPositionInput.addEventListener("input", () => {
   );
 });
 
+
+function setAmateurMode(enabled) {
+  isAmateurMode = enabled;
+
+  amateurToggleButton.classList.toggle(
+    "active",
+    enabled
+  );
+
+  amateurToggleButton.setAttribute(
+    "aria-pressed",
+    enabled ? "true" : "false"
+  );
+
+  const salaryInput =
+    document.getElementById("salary");
+  const marketValueInput =
+    document.getElementById("marketValue");
+  const contractStartInput =
+    document.getElementById("contractStart");
+  const contractEndInput =
+    document.getElementById("contractEnd");
+  const contractTypeInput =
+    document.getElementById("contractType");
+
+  if (enabled) {
+    salaryInput.value = "";
+    salaryUnit.value = "万";
+
+    marketValueInput.value = "";
+    marketValueUnit.value = "万";
+
+    contractStartInput.value = "";
+    contractEndInput.value = "";
+    contractTypeInput.value = "";
+  } else if (!editingPlayerId) {
+    contractStartInput.value =
+      getGlobalGameDate();
+
+    contractTypeInput.value =
+      "フルタイム";
+  }
+}
+
+amateurToggleButton.addEventListener(
+  "click",
+  () => {
+    setAmateurMode(
+      !isAmateurMode
+    );
+  }
+);
+
 function resetForm() {
   editingPlayerId = null;
+  isAmateurMode = false;
+  amateurToggleButton.classList.remove("active");
+  amateurToggleButton.setAttribute(
+    "aria-pressed",
+    "false"
+  );
 
   document.getElementById("playerName").value = "";
   setBirthDateParts("");
@@ -2926,6 +2988,10 @@ function resetForm() {
 
   document.getElementById("marketValue").value = "";
   marketValueUnit.value = "万";
+
+  document.getElementById("contractStart").value =
+    getGlobalGameDate();
+
   document.getElementById("contractEnd").value = "";
   document.getElementById("lastChecked").value =
     new Date().toISOString().slice(0, 10);
@@ -3153,6 +3219,7 @@ savePlayerButton.addEventListener("click", () => {
   }
 
   const playerData = {
+    amateur: isAmateurMode,
     name,
     birthDate,
     age,
@@ -3183,29 +3250,39 @@ savePlayerButton.addEventListener("click", () => {
       ).value,
 
     salary:
-      salaryValue,
+      isAmateurMode
+        ? null
+        : salaryValue,
 
     marketValue:
-      marketValue,
+      isAmateurMode
+        ? null
+        : marketValue,
 
     contractStart:
-      document.getElementById(
-        "contractStart"
-      ).value,
+      isAmateurMode
+        ? ""
+        : document.getElementById(
+            "contractStart"
+          ).value,
 
     contractEnd:
-      document.getElementById(
-        "contractEnd"
-      ).value,
+      isAmateurMode
+        ? ""
+        : document.getElementById(
+            "contractEnd"
+          ).value,
 
     lastChecked:
       getGlobalGameDate(),
 
     contractType:
-      document
-        .getElementById("contractType")
-        .value
-        .trim(),
+      isAmateurMode
+        ? ""
+        : document
+            .getElementById("contractType")
+            .value
+            .trim(),
 
     loanStatus:
       selectedLoanStatus,
@@ -3357,7 +3434,33 @@ editPlayerButton.addEventListener("click", () => {
   document.getElementById(
     "contractType"
   ).value =
-    player.contractType || "フルタイム";
+    player.contractType || "";
+
+  const playerIsAmateur =
+    player.amateur === true ||
+    (
+      !player.salary &&
+      !player.marketValue &&
+      !player.contractStart &&
+      !player.contractEnd &&
+      !player.contractType
+    );
+
+  setAmateurMode(
+    playerIsAmateur
+  );
+
+  if (
+    !playerIsAmateur &&
+    !document.getElementById(
+      "contractType"
+    ).value
+  ) {
+    document.getElementById(
+      "contractType"
+    ).value =
+      "フルタイム";
+  }
 
   document.getElementById(
     "memo"
@@ -4859,6 +4962,17 @@ players = players.map(player => {
   ) {
     converted.potentialAbilityMax =
       converted.potentialAbilityCertain;
+  }
+
+  if (
+    converted.amateur === undefined
+  ) {
+    converted.amateur =
+      !converted.salary &&
+      !converted.marketValue &&
+      !converted.contractStart &&
+      !converted.contractEnd &&
+      !converted.contractType;
   }
 
   if (
